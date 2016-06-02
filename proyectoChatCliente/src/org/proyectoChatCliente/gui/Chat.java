@@ -10,15 +10,14 @@ import java.io.IOException;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractListModel;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ListDataListener;
 import org.proyectoChatCliente.model.LMForo;
 import org.proyectoChatCliente.net.Conector;
 import org.proyectoChatCliente.net.HiloReceptor;
+import static org.proyectoChatComun.net.Tester.isConnectedToNasa;
+import org.proyectoChatComun.base.Code;
 import org.proyectoChatComun.base.Mensaje;
 import org.proyectoChatComun.base.PaqueteInicial;
 import org.proyectoChatComun.base.Usuario;
@@ -37,6 +36,12 @@ public class Chat extends javax.swing.JFrame {
     
     public Chat() {
         initComponents();
+        if (isConnectedToNasa()) 
+            System.out.println("Conectado a la nasa! :)");
+        
+        else 
+            System.out.println("No nos hemos podido conectar a la nasa :/ es una pena");
+        
         setResizable(false);
         setLocationRelativeTo(null);
         winChat.setSize(542, 357);
@@ -44,11 +49,22 @@ public class Chat extends javax.swing.JFrame {
         winRegistrar.setResizable(false);
         winRegistrar.setSize(winRegistrar.getPreferredSize());
         winRegistrar.setLocationRelativeTo(null);
-        listaConectados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION   );
+        listaConectados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-
+    
     private void send(Object obj) throws IOException{
         cliente.sendObject(obj);
+    }
+    
+    /**
+     * 
+     * @param obj Objeto a validar
+     * @return true si el objeto entregado no es nulo, false en caso contrario
+     */
+    
+    private boolean hasObject(Object obj){
+        
+        return obj != null;
     }
     
     /**
@@ -365,38 +381,55 @@ public class Chat extends javax.swing.JFrame {
                 boolean permitido = false;
                 Object objRecibido = null;
                 
-                while (objRecibido == null) objRecibido = cliente.getReceivedObject();
+                while (!hasObject(objRecibido)) objRecibido = cliente.getReceivedObject();
+                
+                String msgFrame;
+                String title;
+                int typeMessage;
                 
                 permitido = (boolean) objRecibido;
-                
-                String msgCuadro;
-                
+
                 if (permitido) {
-                    
+
                     objRecibido = null;
+
+                    while (!hasObject(objRecibido)) objRecibido = cliente.getReceivedObject();
+
+                    if (objRecibido instanceof Code) {
+                        typeMessage = JOptionPane.WARNING_MESSAGE;
+                        title = "Error de inicio de sesion";
+                        msgFrame = "El usuario que acaba de ingresar\nya se encuentra conectado";
+                    } 
                     
-                    while (objRecibido == null) 
-                        objRecibido = cliente.getReceivedObject();
-                    
-                    paqueteUser = (PaqueteInicial) objRecibido;
-                    msgCuadro = "Bienvenido";
-                    setVisible(false);
-                    winChat.setVisible(true);
-                    updateListUsers(paqueteUser.getUsuarios());
-                    hReceptor = new Thread(new HiloReceptor(cliente, txtForo, listaConectados)::run);
-                    hReceptor.start();
-                    
-                }
-                
-                else{
-                    msgCuadro = "Usuario y/o contraseña invalidos";
+                    else {
+                        paqueteUser = (PaqueteInicial) objRecibido;
+                        msgFrame = "Bienvenido";
+                        typeMessage = JOptionPane.INFORMATION_MESSAGE;
+                        title = "Sesion iniciada";
+
+                        setVisible(false);
+                        winChat.setVisible(true);
+                        updateListUsers(paqueteUser.getUsuarios());
+                        hReceptor = new Thread(new HiloReceptor(cliente, txtForo, listaConectados)::run);
+                        hReceptor.start();
+                    }
+
+                } else {
+                    msgFrame = "Usuario y/o contraseña invalidos";
+                    typeMessage = JOptionPane.WARNING_MESSAGE;
+                    title = "Error de inicio de sesion";
                     txtNick.requestFocus();
                     txtNick.selectAll();
                 }
-                
-                JOptionPane.showMessageDialog(this, msgCuadro);
+
+                JOptionPane.showMessageDialog(this, msgFrame, title, typeMessage);
             } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+                
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "No hay conexion a internet", 
+                        "Error", 
+                        JOptionPane.WARNING_MESSAGE);
             }
         }
         
@@ -547,7 +580,9 @@ public class Chat extends javax.swing.JFrame {
 
                     System.out.println(msg.getTexto());
                     send(msg);
-                    txtForo.setText(txtForo.getText() + msg + "\n");
+                    txtForo.setText(txtForo.getText() + "[" + msg.getHora() + "] " + 
+                            paqueteUser.getUser().getNick() + ": " + msg.getTexto());
+                    
                     txtMsgForo.setText(null);
                 }
                 

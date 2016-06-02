@@ -42,15 +42,34 @@ public class HiloReceptor implements Runnable{
         this.foro = foro;
         this.tabbed = tabbed;
         ventanasChat = new LinkedList<>();
+        
     }
 
+    public boolean isChatExistente(Mensaje msg){
+
+        // Metodo anyMatch valida si uno de los elementos cumple con una condicion dada
+        return ventanasChat.stream().anyMatch((pc) -> (pc.usuarioReceptor == msg.getEmisor()));
+    }
+    
     public List<PanelChat> getVentanasChat() {
         return ventanasChat;
     }
     
-    public void addWin(PanelChat panel){
+    public void displayMessage(Mensaje msg){
+
+        ventanasChat.forEach((win) -> {
+        
+            if (win.usuarioReceptor == msg.getEmisor()) win.addMsg(msg);
+            
+        });
+    }
+
+    public void addWin(PanelChat panel, Mensaje msg){
         
         ventanasChat.add(panel);
+        tabbed.add(panel);
+        tabbed.updateUI();
+        displayMessage(msg);
     }
     
     @Override
@@ -60,9 +79,11 @@ public class HiloReceptor implements Runnable{
         TreeMap listaRecibida;
         Object objRecibido;
         boolean usuarioExistente = false;
+        int cont = 0;
         
         while (true) {            
             
+            cont++;
             try {
                 Thread.sleep(100);
                 objRecibido = con.getReceivedObject();
@@ -72,34 +93,37 @@ public class HiloReceptor implements Runnable{
                     if (objRecibido instanceof Mensaje) {
                         recibido = (Mensaje) objRecibido;
                         
-                        if (recibido.getReceptor() == 2)
-                            foro.setText("[" + recibido.getHora() + "] " + foro.getText() + recibido.getTexto() + "\n");
+                        if (recibido.getReceptor() == 2){
+
+                            if (!foro.getText().endsWith("\n")) foro.setText(foro.getText() + "\n");
+                            
+                            foro.setText(foro.getText() + "[" + recibido.getHora() + "] " + 
+                                    recibido.getStrEmisor() + ": " + 
+                                    recibido.getTexto() + "\n");
+                        }
                         
                         else{
 
-                            for(PanelChat pc : ventanasChat){
-                                
-                                if (pc.usuarioReceptor == recibido.getEmisor()) {
-                                    pc.addMsg(recibido);
-                                    usuarioExistente = !usuarioExistente;
-                                }
-                            }
+                            usuarioExistente = isChatExistente(recibido);
                             
-                            if (usuarioExistente) 
+                            if (usuarioExistente){ 
                                 usuarioExistente = !usuarioExistente;
-                            
-                            else{
-                                addWin(new PanelChat(recibido.getEmisor()));
-                                ventanasChat.get(ventanasChat.size()-1).addMsg(recibido);
+                                displayMessage(recibido);
                             }
+                            else addWin(new PanelChat(recibido.getEmisor()), recibido);
+                            
+                            
                         }
                     }
                     
-                    else if (objRecibido instanceof TreeMap) {
-                        listaRecibida = (TreeMap) objRecibido;
-                        listUsuarios.setModel(new LMForo(listaRecibida));
+                    if (cont % 10 == 0) 
+                    
+                        if (objRecibido instanceof TreeMap) {
+                            listaRecibida = (TreeMap) objRecibido;
+                            listUsuarios.setModel(new LMForo(listaRecibida));
                         
-                    }
+                        }
+                    
                     
                 }
                 

@@ -34,6 +34,16 @@ public class Conector {
     public void addUser(int key, Usuario value){
         usuarios.put(key, value);
     }
+
+    public void removeCliente(int index){
+        
+        clientes.remove(index);
+        removeUser(index);
+    }
+    
+    public void removeUser(int index){
+        usuarios.remove(index);
+    }
     
     public TreeMap<Integer, Cliente> getClientes() {
         return clientes;

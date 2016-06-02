@@ -102,12 +102,12 @@ public class CuadroOptions extends javax.swing.JDialog {
 
     private void btnEnableUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnableUserActionPerformed
 
-        Database.setStatusUser(selected.getNick(), Status.HABILITADO);
+        Database.setStatusUser(selected.getNick(), Status.ENABLE);
     }//GEN-LAST:event_btnEnableUserActionPerformed
 
     private void btnDisableUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisableUserActionPerformed
 
-        Database.setStatusUser(selected.getNick(), Status.DESHABILITADO);
+        Database.setStatusUser(selected.getNick(), Status.DISABLE);
         
     }//GEN-LAST:event_btnDisableUserActionPerformed
 

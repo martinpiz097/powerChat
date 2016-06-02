@@ -1,0 +1,40 @@
+
+iniciar servidor: /start
+
+	-u --user (usuario)
+	-k --key (clave)
+	-p --port (puerto)
+	mas adelante agregar -g --gui -w -h(modo grafico configurando alto y ancho)
+
+detener servidor: /stop
+
+	-u --user(usuario)
+	-p --password(clave)
+	-m --msg (mensaje obligatorio)
+
+comandos para agregar usuario: --> /add -u ó -user
+
+ordenes:
+
+	-n --nombre
+	-a --nick
+	-p --password
+	-g --grupo
+
+
+borrar usuario /enable
+
+ordenes:
+
+	-u --user (nick) o -i --id (id)
+	-t --true(habilitar)
+	-f --false(deshabilitar)
+
+buscar usuario /search -u ó --user
+
+	-a --all (todos) ó
+	-g --group (grupo) ó
+	-n --nick (nick) ó
+	-e --enable ó -d --disable (los que estan o no habilitados)
+	
+

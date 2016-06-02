@@ -22,4 +22,12 @@ public final class Tester {
             return false;
         }
     }
+    
+    public static boolean isConnectedToNasa(){
+        try {
+            return new Socket("www.nasa.gov", 80).isConnected();
+        } catch (IOException ex) {
+            return false;
+        }
+    }
 }

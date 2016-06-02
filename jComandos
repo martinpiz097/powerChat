@@ -1,0 +1,22 @@
+/help --> muestra todos los comandos
+
+Los comando deben ser orientados a objetos
+
+/start --> inicia server (-p) ó --port --> puerto -gui -width -height
+/stop --> para server -m(mensaje)
+
+el servidor no puede ser grafico
+
+cuando el servidor este completo sin gui le puedo poner gui
+
+debe crear un log de todo lo hecho en servidor en un txt con fecha y hora
+
+crear un log especial para cuando cierre el servidor para entregarle un mensaje
+
+/add -grupo nombreGrupo
+
+/add --grupo ó -g -caca (validar si se agrego mas de una palabra --> en este caso se debe encerrar en comillas)
+
+/add --user nombre -g grupos
+
+

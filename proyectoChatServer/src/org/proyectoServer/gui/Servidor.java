@@ -31,13 +31,8 @@ public class Servidor extends javax.swing.JFrame {
     Thread hiloConector;
     
     public Servidor() {
-        try {
-            Database.connect();
-        } catch (SQLException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         initComponents();
-        
         setLocationRelativeTo(null);
         setResizable(false);
     }

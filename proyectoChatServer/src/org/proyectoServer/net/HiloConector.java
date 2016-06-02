@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import org.proyectoChatComun.base.Code;
 import org.proyectoChatComun.base.PaqueteInicial;
 import org.proyectoChatComun.base.Usuario;
 import org.proyectoServer.db.Database;
@@ -50,7 +51,7 @@ public class HiloConector implements Runnable{
         Object peticionCliente = null;
         boolean loginValido;
         boolean registroValido = false;
-        boolean userDisponible = false;
+        boolean userAltreadyConnected = false;
         Usuario newUser;
         HCliente hc;
         
@@ -64,7 +65,7 @@ public class HiloConector implements Runnable{
                 
                 while (peticionCliente == null)
                     peticionCliente = nuevo.getReceivedObject();
-                 
+                
                 System.out.println("Se ha recibido un objeto");
                 
                 if (peticionCliente instanceof String) {
@@ -78,26 +79,30 @@ public class HiloConector implements Runnable{
                     if (loginValido) {
 
                         newUser = Database.getUser(login.split(",")[0]);
-//
-//                        for (Cliente value : conector.getClientes().values()) {
-//                            
-//                            userDisponible = !(value.getUser().getId() == newUser.getId());
-//                            
-//                            if (!userDisponible) break;
-//                            
-//                        }
-//                        
-                        if (!userDisponible) {
+
+                        for (Cliente value : conector.getClientes().values()) {
+                            
+                            userAltreadyConnected = value.getUser().getId() == newUser.getId();
+                            
+                            if (userAltreadyConnected) break;
+                            
+                        }
+                        
+                        if (!userAltreadyConnected) {
                             conector.addCliente(newUser.getId(), nuevo);
+                            System.out.println("Usuarios conectadoa actualmente: " + conector.getUsuarios().size());
                             nuevo.sendObject(new PaqueteInicial(newUser, conector.getUsuarios()));
                             System.out.println("Cliente agregado al mapa");
                             hc = new HCliente(nuevo, conector);
                             hc.start();
                             conexiones.add(hc);
                             nuevo.setUser(newUser);
+                            conector.addUser(newUser.getId(), newUser);
                             conector.getUsuarios().put(newUser.getId(), newUser);
                             updateConsole("Cliente " + nuevo.getUser().getNick());
                         }
+                        
+                        else nuevo.sendObject(Code.IS_CONNECTED);
                         
                     }
                     

@@ -17,6 +17,7 @@ public class Mensaje implements java.io.Serializable{
     private int id;
     private String texto;
     private int emisor;
+    private String strEmisor;
     private int receptor;
     private String fecha;
     private String hora;
@@ -100,6 +101,24 @@ public class Mensaje implements java.io.Serializable{
     public void setEmisor(int emisor) {
         this.emisor = emisor;
     }
+
+    public String getStrEmisor() {
+        return strEmisor;
+    }
+
+    public void setStrEmisor(String strEmisor) {
+        this.strEmisor = strEmisor;
+    }
+
+    public Calendar getC() {
+        return c;
+    }
+
+    public void setC(Calendar c) {
+        this.c = c;
+    }
+    
+    
 
     public int getReceptor() {
         return receptor;

@@ -11,6 +11,6 @@ package org.proyectoServer.db;
  */
 public class Status {
 
-    public static final boolean HABILITADO = true;
-    public static final boolean DESHABILITADO = false;
+    public static final boolean ENABLE = true;
+    public static final boolean DISABLE = false;
 }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.proyectoChatComun.base.Mensaje;
 import org.proyectoChatComun.base.Usuario;
 import org.proyectoServer.model.TipoFiltro;
@@ -23,13 +25,23 @@ import org.proyectoServer.model.TipoFiltro;
 public class Database {
 
     public static Conexion connectionDB;
-    public static ConexionRespaldo respaldo;
+    // public static ConexionRespaldo respaldo;
     public static String query;
+
+    static{
+        try {
+            connectionDB = new Conexion("localhost", "dbChat", "root", "admin");
+            // respaldo = new ConexionRespaldo();
+            Query.conexion = connectionDB;
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public static void connect() throws SQLException{
         
         connectionDB = new Conexion("localhost", "dbChat", "root", "admin");
-        respaldo = new ConexionRespaldo();
+        // respaldo = new ConexionRespaldo();
         Query.conexion = connectionDB;
     }
     
@@ -150,7 +162,7 @@ public class Database {
             while (res.next()) {
                 nuevo = new Usuario(res.getInt(1), res.getString(2), res.getString(3),
                         res.getString(4), res.getInt(5));
-                
+                nuevo.setHabilitado(1);
                 usuarios.put(nuevo.getId(), nuevo);
             }
         }
@@ -190,10 +202,11 @@ public class Database {
         ResultSet res = Query.select("usuario", "nick = '" + nick + "'", "*");
         Usuario user = null;
         
-        if (res.next())
+        if (res.next()){
             user = new Usuario(res.getInt(1), res.getString(2), res.getString(3),
                                         res.getString(4), res.getInt(5));
-        
+            user.setHabilitado(res.getBoolean(6));
+        }
         return user;
     }
     

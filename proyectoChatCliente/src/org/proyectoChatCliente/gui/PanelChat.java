@@ -22,7 +22,7 @@ public class PanelChat extends javax.swing.JPanel {
     }
     
     public void addMsg(Mensaje msg){
-        
+
         txtChat.setText(txtChat.getText() + msg + "\n");
     }
 

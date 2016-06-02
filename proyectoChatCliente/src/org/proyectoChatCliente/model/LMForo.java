@@ -27,6 +27,7 @@ public class LMForo implements ListModel<Usuario>{
 
     public LMForo(ArrayList<Usuario> listaUsuarios) {
         this.listaUsuarios = listaUsuarios;
+        System.out.println("Cantidad de usuarios conectados: " + listaUsuarios.size());
     }
 
     @Override

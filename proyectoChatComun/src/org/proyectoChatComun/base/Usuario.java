@@ -9,7 +9,7 @@ package org.proyectoChatComun.base;
  *
  * @author martin
  */
-public class Usuario implements java.io.Serializable{
+public class Usuario implements java.io.Serializable {
 
     private int id;
     private String nombre;
@@ -17,7 +17,7 @@ public class Usuario implements java.io.Serializable{
     private String clave;
     private int tipo;
     private int habilitado;
-    
+
     public Usuario(int id, String nombre, String nick, String clave, int tipo) {
         this.id = id;
         this.nombre = nombre;
@@ -31,6 +31,40 @@ public class Usuario implements java.io.Serializable{
         this.nick = nick;
         this.clave = clave;
         this.tipo = tipo;
+    }
+
+    public Usuario(int id, String nombre, String nick, String clave, int tipo, int habilitado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.nick = nick;
+        this.clave = clave;
+        this.tipo = tipo;
+        this.habilitado = habilitado;
+    }
+
+    public Usuario(String nombre, String nick, String clave, int tipo, int habilitado) {
+        this.nombre = nombre;
+        this.nick = nick;
+        this.clave = clave;
+        this.tipo = tipo;
+        this.habilitado = habilitado;
+    }
+
+    public Usuario(int id, String nombre, String nick, String clave, int tipo, boolean habilitado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.nick = nick;
+        this.clave = clave;
+        this.tipo = tipo;
+        setHabilitado(habilitado);
+    }
+
+    public Usuario(String nombre, String nick, String clave, int tipo, boolean habilitado) {
+        this.nombre = nombre;
+        this.nick = nick;
+        this.clave = clave;
+        this.tipo = tipo;
+        setHabilitado(habilitado);
     }
 
     public int getId() {
@@ -72,8 +106,8 @@ public class Usuario implements java.io.Serializable{
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
-    
-    public boolean isHabilitado(){
+
+    public boolean isHabilitado() {
         return habilitado == 1;
     }
 
@@ -84,13 +118,14 @@ public class Usuario implements java.io.Serializable{
         else if (paramHabilitado instanceof Boolean) {
 
             boolean boolHabilitado = (boolean) paramHabilitado;
-            
+
             if (boolHabilitado) habilitado = 1;
             
             else habilitado = 0;
+            
         }
     }
-    
+
     @Override
     public String toString() {
 
