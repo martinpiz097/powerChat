@@ -435,10 +435,16 @@ public class Chat extends javax.swing.JFrame {
                         setVisible(false);
                         winChat.setVisible(true);
                         updateListUsers(paqueteUser.getUsuarios());
-                        hReceptor = new Thread(
-                                new HiloReceptor(paqueteUser, cliente, txtForo, tabbedChat, listaConectados)::run);
-                        
+                        System.out.println(paqueteUser.getUser());
+                        hReceptor = new Thread(() -> new HiloReceptor
+                            (paqueteUser, cliente, txtForo, tabbedChat, listaConectados));
+           
                         hReceptor.start();
+                        
+                        /*
+                        Instanciar objetos con estilo
+                        Thread t;
+                        (t) -> Thread::new;*/
                     }
 
                 } else {

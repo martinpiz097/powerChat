@@ -6,6 +6,7 @@
 package org.proyectoServer.main;
 
 import org.martin.proyectoChatComandos.base.Comando;
+import org.martin.proyectoChatComandos.base.Opcion;
 import org.martin.proyectoChatComandos.base.Orden;
 
 /**
@@ -21,42 +22,47 @@ public class Runner {
     }
     
     public boolean isEjecutable(){
-        
-        boolean isRunnable = false;
-        
-        if (!cmd.orden.equals(Orden.HELP) && cmd.opciones == null) 
-            return isRunnable;
-        
-        
-        
-        return isRunnable;
+        return cmd.isValido;
     }
     
-    public void run() {
+    public boolean run() {
         
-        /*
-        if (cmd.orden.equals(Orden.ADD)) {
-            
+        switch (cmd.orden) {
+            case Orden.ADD:
+                if (cmd.getCantOptions() == 4) {
+                    
+                }
+                else return false;
+                break;
+            case Orden.ENABLE:
+                break;
+            case Orden.HELP:
+                
+                break;
+            case Orden.SEARCH:
+                break;
+            case Orden.START:
+                if (cmd.getCantOptions() == 3) {
+                    if (cmd.hasOptions(Opcion.USER1, Opcion.KEY1, Opcion.PORT1) || 
+                            cmd.hasOptions(Opcion.USER1, Opcion.KEY2, Opcion.PORT1) || 
+                            cmd.hasOptions(Opcion.USER1)){
+                        
+                    }
+                }
+                else return false;
+                break;
+            case Orden.STOP:
+                if (cmd.getCantOptions() == 3) {
+                    
+                }
+                else return false;
+                break;
+            default:
+                System.out.println("Error de sintaxis de comando");
+                break;
         }
-        else if (cmd.orden.equals(Orden.ENABLE)) {
-            
-        }
-        else if (cmd.orden.equals(Orden.HELP)) {
-            
-        }
-        else if (cmd.orden.equals(Orden.SEARCH)) {
-            
-        }
-        else if (cmd.orden.equals(Orden.START)) {
-            
-        }
-        else if (cmd.orden.equals(Orden.STOP)) {
-            
-        }
-        else{
-            System.out.println("Error de sintaxis de comando");
-        }
-        */
+
+        return false;
     }
     
 }
