@@ -5,7 +5,13 @@
  */
 package org.proyectoChatCliente.gui;
 
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.proyectoChatCliente.net.Conector;
 import org.proyectoChatComun.base.Mensaje;
+import org.proyectoChatComun.base.PaqueteInicial;
 
 /**
  *
@@ -14,16 +20,37 @@ import org.proyectoChatComun.base.Mensaje;
 public class PanelChat extends javax.swing.JPanel {
 
     public int usuarioReceptor;
+    private PaqueteInicial paqIni;
+    private Conector cliente;
     
     public PanelChat(int usuarioReceptor) {
         this.usuarioReceptor = usuarioReceptor;
         initComponents();
+        txtChat.setEditable(false);
         setSize(615, 261);
     }
     
-    public void addMsg(Mensaje msg){
+    public PanelChat(int usuarioReceptor, PaqueteInicial paqIni, Conector cliente){
+        this.usuarioReceptor = usuarioReceptor;
+        this.paqIni = paqIni;
+        this.cliente = cliente;
+        initComponents();
+        setSize(615, 261);
+    }
 
-        txtChat.setText(txtChat.getText() + msg + "\n");
+    private void send(Mensaje msg) throws IOException{
+        
+        cliente.sendObject(msg);
+        addMsg(msg);
+    }
+    
+    public void addMsg(Mensaje msg){
+        
+        if (msg.getTexto().endsWith("\n")) txtChat.setText(txtChat.getText() + msg);
+        
+        else txtChat.setText(txtChat.getText() + msg + "\n");
+
+        txtMsg.setText(null);
     }
 
     /**
@@ -44,6 +71,11 @@ public class PanelChat extends javax.swing.JPanel {
 
         txtMsg.setColumns(20);
         txtMsg.setRows(5);
+        txtMsg.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMsgKeyPressed(evt);
+            }
+        });
         jScrollPane5.setViewportView(txtMsg);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -55,12 +87,36 @@ public class PanelChat extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                .addGap(50, 50, 50))
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtMsgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMsgKeyPressed
+
+        String msgEscrito = txtMsg.getText().trim();
+        boolean mensajeVacio = msgEscrito.isEmpty();
+        
+        if (evt.isShiftDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtChat.setText(msgEscrito + txtMsg.getText().trim() + "\n");
+        }
+        else if (!evt.isShiftDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            try {
+                if (!mensajeVacio) {
+                    
+                    Mensaje msg = new Mensaje(msgEscrito, paqIni.getUser().getId(), usuarioReceptor);
+                    System.out.println(msg.getTexto());
+                    send(msg);
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_txtMsgKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

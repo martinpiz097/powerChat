@@ -1,0 +1,4 @@
+- Actualizar lista de usuarios conectados
+- Agregar comprobaciones de conexion a internet (revisar)
+- Agregar algoritmos referentes a la desconexion de un cliente (revisar)
+- Mostrar mensajes del foro al iniciar sesion (se pueden agregar al paqueteInicial)

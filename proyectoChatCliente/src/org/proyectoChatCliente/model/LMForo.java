@@ -23,6 +23,7 @@ public class LMForo implements ListModel<Usuario>{
     public LMForo(TreeMap<Integer, Usuario> usuarios) {
         super();
         this.mapaUsuarios = usuarios;
+        System.out.println("Cantidad de usuarios conectados: " + mapaUsuarios.size());
     }
 
     public LMForo(ArrayList<Usuario> listaUsuarios) {

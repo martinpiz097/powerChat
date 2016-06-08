@@ -6,8 +6,8 @@
 package org.proyectoChatCliente.net;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +17,7 @@ import javax.swing.JTextPane;
 import org.proyectoChatCliente.gui.PanelChat;
 import org.proyectoChatCliente.model.LMForo;
 import org.proyectoChatComun.base.Mensaje;
+import org.proyectoChatComun.base.PaqueteInicial;
 
 /**
  *
@@ -24,50 +25,58 @@ import org.proyectoChatComun.base.Mensaje;
  */
 public class HiloReceptor implements Runnable{
 
+    private PaqueteInicial paqIni;
     private Conector con;
     private JTextPane foro;
     private JTabbedPane tabbed;
-    private List<PanelChat> ventanasChat;
+    private Map<Integer, PanelChat> ventanasChat;
     private JList listUsuarios;
   
     public HiloReceptor(Conector con, JTextPane foro, JList listUsuarios) {
         this.con = con;
         this.foro = foro;
-        ventanasChat = new LinkedList<>();
+        ventanasChat = new HashMap<>();
         this.listUsuarios = listUsuarios;   
+    }
+
+    public HiloReceptor(PaqueteInicial paqIni, Conector con, JTextPane foro, JTabbedPane tabbed, JList listUsuarios) {
+        this.paqIni = paqIni;
+        this.con = con;
+        this.foro = foro;
+        this.tabbed = tabbed;
+        this.ventanasChat = new HashMap<>();
+        this.listUsuarios = listUsuarios;
     }
 
     public HiloReceptor(Conector con, JTextPane foro, JTabbedPane tabbed) {
         this.con = con;
         this.foro = foro;
         this.tabbed = tabbed;
-        ventanasChat = new LinkedList<>();
+        ventanasChat = new HashMap<>();
         
     }
 
     public boolean isChatExistente(Mensaje msg){
 
         // Metodo anyMatch valida si uno de los elementos cumple con una condicion dada
-        return ventanasChat.stream().anyMatch((pc) -> (pc.usuarioReceptor == msg.getEmisor()));
+        // return ventanasChat.stream().anyMatch((pc) -> (pc.usuarioReceptor == msg.getEmisor()));
+
+        return ventanasChat.values().stream().anyMatch((pc) -> pc.usuarioReceptor == msg.getEmisor());
     }
     
-    public List<PanelChat> getVentanasChat() {
+    public Map<Integer, PanelChat> getVentanasChat() {
         return ventanasChat;
     }
     
     public void displayMessage(Mensaje msg){
 
-        ventanasChat.forEach((win) -> {
-        
-            if (win.usuarioReceptor == msg.getEmisor()) win.addMsg(msg);
-            
-        });
+        ventanasChat.get(msg.getEmisor()).addMsg(msg);
     }
-
+    
     public void addWin(PanelChat panel, Mensaje msg){
         
-        ventanasChat.add(panel);
-        tabbed.add(panel);
+        ventanasChat.put(msg.getEmisor(), panel);
+        tabbed.addTab(msg.getStrEmisor(), panel);
         tabbed.updateUI();
         displayMessage(msg);
     }
@@ -80,6 +89,7 @@ public class HiloReceptor implements Runnable{
         Object objRecibido;
         boolean usuarioExistente = false;
         int cont = 0;
+        String textoForo;
         
         while (true) {            
             
@@ -94,10 +104,11 @@ public class HiloReceptor implements Runnable{
                         recibido = (Mensaje) objRecibido;
                         
                         if (recibido.getReceptor() == 2){
-
-                            if (!foro.getText().endsWith("\n")) foro.setText(foro.getText() + "\n");
                             
-                            foro.setText(foro.getText() + "[" + recibido.getHora() + "] " + 
+                            textoForo = foro.getText();
+                            if (!textoForo.endsWith("\n")) foro.setText(textoForo + "\n");
+                            
+                            foro.setText(textoForo + "[" + recibido.getHora() + "] " + 
                                     recibido.getStrEmisor() + ": " + 
                                     recibido.getTexto() + "\n");
                         }
@@ -111,7 +122,6 @@ public class HiloReceptor implements Runnable{
                                 displayMessage(recibido);
                             }
                             else addWin(new PanelChat(recibido.getEmisor()), recibido);
-                            
                             
                         }
                     }

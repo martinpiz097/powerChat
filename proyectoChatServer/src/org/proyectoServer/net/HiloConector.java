@@ -1,5 +1,4 @@
 
-
 package org.proyectoServer.net;
 
 import java.io.IOException;
@@ -7,15 +6,17 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.rowset.serial.SerialArray;
 import javax.swing.JTextArea;
 import org.proyectoChatComun.base.Code;
 import org.proyectoChatComun.base.PaqueteInicial;
 import org.proyectoChatComun.base.Usuario;
 import org.proyectoServer.db.Database;
 import tiempo.Calendario;
-
 /**
  *
  * @author martin
@@ -38,7 +39,7 @@ public class HiloConector implements Runnable{
     }
     
     private String getHoraActual(){
-        
+
         return "[" + new Calendario().getReloj() + "] ";
     }
     
@@ -67,7 +68,6 @@ public class HiloConector implements Runnable{
                     peticionCliente = nuevo.getReceivedObject();
                 
                 System.out.println("Se ha recibido un objeto");
-                
                 if (peticionCliente instanceof String) {
                     login = String.valueOf(peticionCliente);
                     System.out.println("Objeto casteado");

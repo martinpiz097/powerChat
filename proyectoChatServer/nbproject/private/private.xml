@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/db/Status.java</file>
             <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/gui/Servidor.java</file>
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/Cliente.java</file>
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/Conector.java</file>
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/HCliente.java</file>
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/HiloConector.java</file>
             <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/db/Database.java</file>
+            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/db/Status.java</file>
+            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/HiloConector.java</file>
+            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/Conector.java</file>
+            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/Cliente.java</file>
         </group>
     </open-files>
 </project-private>
