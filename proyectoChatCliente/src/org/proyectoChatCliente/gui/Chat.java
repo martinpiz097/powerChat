@@ -7,11 +7,11 @@ package org.proyectoChatCliente.gui;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.proyectoChatCliente.model.LMForo;
 import org.proyectoChatCliente.net.Conector;
@@ -31,6 +31,7 @@ public class Chat extends javax.swing.JFrame {
     public static final int PUERTO_DEFAULT = 1234;
     private PaqueteInicial paqueteUser;
     private Thread hReceptor;
+    private HiloReceptor hiloRec;
     private Conector cliente;
     
     public Chat() {
@@ -45,7 +46,7 @@ public class Chat extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         winChat.setSize(542, 357);
         winChat.setLocationRelativeTo(null);
-        txtMsgForo.setEditable(false);
+        txtForo.setEditable(false);
         winRegistrar.setResizable(false);
         winRegistrar.setSize(winRegistrar.getPreferredSize());
         winRegistrar.setLocationRelativeTo(null);
@@ -434,11 +435,12 @@ public class Chat extends javax.swing.JFrame {
 
                         setVisible(false);
                         winChat.setVisible(true);
+                        paqueteUser.getUsuarios().values().forEach((u) -> System.out.println("Usuario: " + u.getNick()));
                         updateListUsers(paqueteUser.getUsuarios());
                         System.out.println(paqueteUser.getUser());
-                        hReceptor = new Thread(() -> new HiloReceptor
-                            (paqueteUser, cliente, txtForo, tabbedChat, listaConectados));
-           
+                        hiloRec = new HiloReceptor
+                            (paqueteUser, cliente, txtForo, tabbedChat, listaConectados);
+                        hReceptor = new Thread(() -> hiloRec.run());
                         hReceptor.start();
                         
                         /*
@@ -460,7 +462,7 @@ public class Chat extends javax.swing.JFrame {
                 
                 JOptionPane.showMessageDialog(
                         this, 
-                        "No hay conexion a internet", 
+                        "No hay conexion con el servidor", 
                         "Error", 
                         JOptionPane.WARNING_MESSAGE);
             }
@@ -603,7 +605,7 @@ public class Chat extends javax.swing.JFrame {
                     System.out.println(msg.getTexto());
                     send(msg);
                     txtForo.setText(txtForo.getText() + "[" + msg.getHora() + "] " +
-                        paqueteUser.getUser().getNick() + ": " + msg.getTexto());
+                        paqueteUser.getUser().getNick() + ": " + msg.getTexto() + "\n");
 
                     txtMsgForo.setText(null);
                 }
@@ -618,7 +620,8 @@ public class Chat extends javax.swing.JFrame {
     private void listaConectadosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaConectadosMouseReleased
 
         if (evt.getClickCount() == 2) {
-
+            Usuario user = listaConectados.getSelectedValue();
+            hiloRec.addWin(new PanelChat(user.getId(), paqueteUser, cliente), null);
         }
     }//GEN-LAST:event_listaConectadosMouseReleased
 
@@ -632,9 +635,11 @@ public class Chat extends javax.swing.JFrame {
     }//GEN-LAST:event_winChatWindowClosing
 
     private void updateListUsers(TreeMap<Integer, Usuario> usuarios){
-
         listaConectados.setModel(new LMForo(usuarios));
-        listaConectados.updateUI();
+    }
+    
+    private void updateListUsers(ArrayList<Usuario> usuarios){
+        listaConectados.setModel(new LMForo(usuarios));
     }
     
     public static void main(String args[]) {

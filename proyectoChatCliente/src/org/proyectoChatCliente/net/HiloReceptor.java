@@ -32,13 +32,14 @@ public class HiloReceptor implements Runnable{
     private Map<Integer, PanelChat> ventanasChat;
     private JList listUsuarios;
   
+    /*
     public HiloReceptor(Conector con, JTextPane foro, JList listUsuarios) {
         this.con = con;
         this.foro = foro;
         ventanasChat = new HashMap<>();
         this.listUsuarios = listUsuarios;   
     }
-
+    */
     public HiloReceptor(PaqueteInicial paqIni, Conector con, JTextPane foro, JTabbedPane tabbed, JList listUsuarios) {
         this.paqIni = paqIni;
         this.con = con;
@@ -47,7 +48,8 @@ public class HiloReceptor implements Runnable{
         this.ventanasChat = new HashMap<>();
         this.listUsuarios = listUsuarios;
     }
-
+    
+    /*
     public HiloReceptor(Conector con, JTextPane foro, JTabbedPane tabbed) {
         this.con = con;
         this.foro = foro;
@@ -55,12 +57,11 @@ public class HiloReceptor implements Runnable{
         ventanasChat = new HashMap<>();
         
     }
-
+    */
     public boolean isChatExistente(Mensaje msg){
 
         // Metodo anyMatch valida si uno de los elementos cumple con una condicion dada
         // return ventanasChat.stream().anyMatch((pc) -> (pc.usuarioReceptor == msg.getEmisor()));
-
         return ventanasChat.values().stream().anyMatch((pc) -> pc.usuarioReceptor == msg.getEmisor());
     }
     
@@ -78,7 +79,9 @@ public class HiloReceptor implements Runnable{
         ventanasChat.put(msg.getEmisor(), panel);
         tabbed.addTab(msg.getStrEmisor(), panel);
         tabbed.updateUI();
-        displayMessage(msg);
+        
+        if (msg != null) displayMessage(msg);
+        
     }
     
     @Override
@@ -126,15 +129,11 @@ public class HiloReceptor implements Runnable{
                         }
                     }
                     
-                    if (cont % 10 == 0) 
-                    
+                    if (cont % 8 == 0) 
                         if (objRecibido instanceof TreeMap) {
                             listaRecibida = (TreeMap) objRecibido;
                             listUsuarios.setModel(new LMForo(listaRecibida));
-                        
                         }
-                    
-                    
                 }
                 
             } catch (InterruptedException | IOException | ClassNotFoundException ex) {

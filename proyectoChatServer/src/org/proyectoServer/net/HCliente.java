@@ -37,7 +37,7 @@ public class HCliente extends Thread{
             try {
                 Thread.sleep(300);
 
-                if (cliente.getSocket().isConnected()) {
+                if (cliente.getSocket().isConnected() || !cliente.getSocket().isClosed()) {
 
                     if (cont % 10 == 0) cliente.sendObject(c.getUsuarios());
 
@@ -83,7 +83,9 @@ public class HCliente extends Thread{
                     break;
                 }
             } catch (InterruptedException | IOException | ClassNotFoundException | SQLException ex) {
+                System.out.println("Cayo en la excepcion");
                 Logger.getLogger(HCliente.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }
         }
         

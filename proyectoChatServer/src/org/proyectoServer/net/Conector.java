@@ -16,6 +16,9 @@ import org.proyectoChatComun.base.Usuario;
  */
 public class Conector {
     
+    /*
+    Considerar el cambio de treemap a hashmap
+    */
     private final ServerSocket server;
     private volatile TreeMap<Integer, Cliente> clientes;
     private volatile TreeMap<Integer, Usuario> usuarios;
@@ -29,6 +32,7 @@ public class Conector {
 
     public void addCliente(int key, Cliente value){
         clientes.put(key, value);
+        usuarios.put(key, value.getUser());
     }
 
     public void addUser(int key, Usuario value){

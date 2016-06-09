@@ -6,6 +6,7 @@
 package org.proyectoChatCliente.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.TreeMap;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
@@ -17,6 +18,9 @@ import org.proyectoChatComun.base.Usuario;
  */
 public class LMForo implements ListModel<Usuario>{
 
+    /*
+    Considerar cambiar los ArrayList por LinkedList
+    */
     private TreeMap<Integer, Usuario> mapaUsuarios;
     private ArrayList<Usuario> listaUsuarios;
     
@@ -41,11 +45,9 @@ public class LMForo implements ListModel<Usuario>{
 
     @Override
     public Usuario getElementAt(int index) {
-
         if (mapaUsuarios != null) return mapaUsuarios.get(index);
         
         else return listaUsuarios.get(index);
-        
     }
 
     @Override

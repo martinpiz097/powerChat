@@ -9,7 +9,7 @@ package org.proyectoChatComun.base;
  *
  * @author martin
  */
-public class Usuario implements java.io.Serializable {
+public final class Usuario implements java.io.Serializable {
 
     private int id;
     private String nombre;

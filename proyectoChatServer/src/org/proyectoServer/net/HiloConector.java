@@ -5,12 +5,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sql.rowset.serial.SerialArray;
 import javax.swing.JTextArea;
 import org.proyectoChatComun.base.Code;
 import org.proyectoChatComun.base.PaqueteInicial;
@@ -52,7 +50,7 @@ public class HiloConector implements Runnable{
         Object peticionCliente = null;
         boolean loginValido;
         boolean registroValido = false;
-        boolean userAltreadyConnected = false;
+        boolean userAlreadyConnected = false;
         Usuario newUser;
         HCliente hc;
         
@@ -79,26 +77,26 @@ public class HiloConector implements Runnable{
                     if (loginValido) {
 
                         newUser = Database.getUser(login.split(",")[0]);
-
-                        for (Cliente value : conector.getClientes().values()) {
+                        
+                        Cliente value;
+                        for (Iterator<Cliente> it = conector.getClientes().values().iterator(); it.hasNext();) {
+                            value = it.next();
                             
-                            userAltreadyConnected = value.getUser().getId() == newUser.getId();
+                            if (value.getUser().getId() == newUser.getId()) 
+                                userAlreadyConnected = true;
                             
-                            if (userAltreadyConnected) break;
-                            
+                            if(userAlreadyConnected) break;
                         }
                         
-                        if (!userAltreadyConnected) {
+                        if (!userAlreadyConnected) {
+                            nuevo.setUser(newUser);
                             conector.addCliente(newUser.getId(), nuevo);
+                            System.out.println("Cliente agregado al mapa");
                             System.out.println("Usuarios conectadoa actualmente: " + conector.getUsuarios().size());
                             nuevo.sendObject(new PaqueteInicial(newUser, conector.getUsuarios()));
-                            System.out.println("Cliente agregado al mapa");
                             hc = new HCliente(nuevo, conector);
                             hc.start();
                             conexiones.add(hc);
-                            nuevo.setUser(newUser);
-                            conector.addUser(newUser.getId(), newUser);
-                            conector.getUsuarios().put(newUser.getId(), newUser);
                             updateConsole("Cliente " + nuevo.getUser().getNick());
                         }
                         
