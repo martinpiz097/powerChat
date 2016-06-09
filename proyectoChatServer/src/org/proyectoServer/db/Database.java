@@ -8,10 +8,9 @@ package org.proyectoServer.db;
 import bd.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.proyectoChatComun.base.Mensaje;
@@ -57,16 +56,16 @@ public class Database {
         Query.insert(query);
     }
     
-    public static TreeMap getMensajes() throws SQLException{
+    public static HashMap getMensajes() throws SQLException{
         
         String condicion = "u.id = m.emisor && u.id = m.receptor && u.habilitado = 1";
         ResultSet res = Query.select("mensaje m, usuario u", condicion, "m.id", 
                 "m.texto", "m.emisor", "m.receptor", "m.fecha", "m.hora");
 
         Mensaje nuevo;
-        TreeMap<Integer, Mensaje> mensajes = new TreeMap<>();
+        HashMap<Integer, Mensaje> mensajes = new HashMap<>();
         
-        while (res.next()) {            
+        while (res.next()) {
             nuevo = new Mensaje(res.getInt(1), res.getString(2), res.getInt(3), 
                     res.getInt(4), res.getString(5), res.getString(6));
         
@@ -76,7 +75,7 @@ public class Database {
         return mensajes;
     }
 
-    public static ArrayList<Mensaje> getListMensajes() throws SQLException{
+    public static LinkedList<Mensaje> getListMensajes() throws SQLException{
         
         String condicion = "u1.id = m.emisor and u2.id = m.receptor and u1.habilitado = 1 and "
                 + "u2.habilitado = 1";
@@ -84,8 +83,8 @@ public class Database {
                 "m.texto", "m.emisor", "m.receptor", "m.fecha", "m.hora");
 
         Mensaje nuevo;
-        ArrayList<Mensaje> mensajes = new ArrayList<>();
-        while (res.next()) {            
+        LinkedList<Mensaje> mensajes = new LinkedList<>();
+        while (res.next()) {
             nuevo = new Mensaje(res.getInt(1), res.getString(2), res.getInt(3), 
                     res.getInt(4), res.getString(5), res.getString(6));
         
@@ -95,9 +94,9 @@ public class Database {
         return mensajes;
     }
     
-    public static ArrayList<Mensaje> getMensajes(int emisor, int receptor) throws SQLException{
+    public static LinkedList<Mensaje> getMensajes(int emisor, int receptor) throws SQLException{
         
-        List<Mensaje> mensajes = new ArrayList<>();
+        List<Mensaje> mensajes = new LinkedList<>();
         ResultSet res = Query.select("mensaje", 
                 "emisor = " + emisor + " and receptor = " + receptor, 
                 "id, texto, fecha, hora");
@@ -108,12 +107,12 @@ public class Database {
             mensajes.add(m);
         }
         
-        return (ArrayList<Mensaje>) mensajes;
+        return (LinkedList<Mensaje>) mensajes;
     }
     
-    public static ArrayList<Mensaje> getMensajes(int emisor, int receptor, String filtro) throws SQLException{
+    public static LinkedList<Mensaje> getMensajes(int emisor, int receptor, String filtro) throws SQLException{
         
-        List<Mensaje> mensajes = new ArrayList<>();
+        List<Mensaje> mensajes = new LinkedList<>();
         ResultSet res = Query.select("mensaje", 
                 "emisor = " + emisor + " and receptor = " + receptor + " and texto like '%" + filtro + "%'", 
                 "id, texto, fecha, hora");
@@ -124,7 +123,7 @@ public class Database {
             mensajes.add(m);
         }
         
-        return (ArrayList<Mensaje>) mensajes;
+        return (LinkedList<Mensaje>) mensajes;
     }
 
     public static boolean isRegistroValido(String nickNuevo) throws SQLException{
@@ -153,11 +152,11 @@ public class Database {
         Query.update("usuario", "nick = '" + nick + "'", "habilitado = " + status);
     }
     
-    public static TreeMap getUsers() throws SQLException{
+    public static HashMap getUsers() throws SQLException{
      
-        TreeMap<Integer, Usuario> usuarios;
+        HashMap<Integer, Usuario> usuarios;
         try (ResultSet res = Query.select("usuario", "habilitado = 1", "*")) {
-            usuarios = new TreeMap<>();
+            usuarios = new HashMap<>();
             Usuario nuevo;
             while (res.next()) {
                 nuevo = new Usuario(res.getInt(1), res.getString(2), res.getString(3),
@@ -169,20 +168,14 @@ public class Database {
         return usuarios;
     }
 
-    public static LinkedList<Usuario> getListUsers(int tipoFiltro) throws SQLException{
+    public static LinkedList<Usuario> getListUsers(TipoFiltro tipoFiltro) throws SQLException{
         
         LinkedList<Usuario> users = new LinkedList<>();
         ResultSet res;
         
-        if (tipoFiltro == TipoFiltro.SHOW_ALL) {
-            res = Query.select("usuario", null, "*");
+        if (tipoFiltro == TipoFiltro.SHOW_ALL) res = Query.select("usuario", null, "*");
         
-        
-        }
-        
-        else {
-            res = Query.select("usuario", "habilitado = 1", "*");
-        }
+        else res = Query.select("usuario", "habilitado = 1", "*");
         
         Usuario u;
         

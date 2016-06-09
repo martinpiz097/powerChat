@@ -57,7 +57,7 @@ public class HCliente extends Thread{
                                 System.out.println("Receptor = 2");
                                 Cliente cl;
                                 System.out.println("Clientes conetados: " + c.getClientes().size());
-                                for (Iterator<Cliente> it = c.getClientes().values().iterator(); 
+                                for (Iterator<Cliente> it = c.getClientes().iterator(); 
                                         it.hasNext();) {
                                     
                                     System.out.println("Entro al for");

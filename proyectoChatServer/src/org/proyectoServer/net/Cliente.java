@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.SQLException;
-import java.util.TreeMap;
 import org.proyectoChatComun.base.Usuario;
-import org.proyectoServer.db.Database;
 
 /**
  *
@@ -42,11 +39,11 @@ public class Cliente {
         return socket;
     }
     
-    public void login(String nick, TreeMap<Integer, Usuario> usuarios) throws SQLException{
-        
-        user = Database.getUser(nick);
-        usuarios.put(user.getId(), user);
-    }
+//    public void login(String nick, HashMap<Integer, Usuario> usuarios) throws SQLException{
+//        
+//        user = Database.getUser(nick);
+//        usuarios.put(user.getId(), user);
+//    }
     
     public void sendObject(Object obj) throws IOException{
         

@@ -4,8 +4,8 @@ package org.proyectoServer.net;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ public class HiloConector implements Runnable{
     
     public HiloConector(int puerto, JTextArea console) throws IOException {
         this.conector = new Conector(puerto);
-        conexiones = new ArrayList<>();
+        conexiones = new LinkedList<>();
         this.console = console;
     }
     
@@ -79,7 +79,7 @@ public class HiloConector implements Runnable{
                         newUser = Database.getUser(login.split(",")[0]);
                         
                         Cliente value;
-                        for (Iterator<Cliente> it = conector.getClientes().values().iterator(); it.hasNext();) {
+                        for (Iterator<Cliente> it = conector.getClientes().iterator(); it.hasNext();) {
                             value = it.next();
                             
                             if (value.getUser().getId() == newUser.getId()) 
@@ -90,9 +90,9 @@ public class HiloConector implements Runnable{
                         
                         if (!userAlreadyConnected) {
                             nuevo.setUser(newUser);
-                            conector.addCliente(newUser.getId(), nuevo);
-                            System.out.println("Cliente agregado al mapa");
-                            System.out.println("Usuarios conectadoa actualmente: " + conector.getUsuarios().size());
+                            conector.addCliente(nuevo);
+                            System.out.println("Cliente agregado a la lista");
+                            System.out.println("Usuarios conectados actualmente: " + conector.getUsuarios().size());
                             nuevo.sendObject(new PaqueteInicial(newUser, conector.getUsuarios()));
                             hc = new HCliente(nuevo, conector);
                             hc.start();

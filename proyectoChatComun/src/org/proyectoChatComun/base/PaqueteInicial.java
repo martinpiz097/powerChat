@@ -5,7 +5,7 @@
  */
 package org.proyectoChatComun.base;
 
-import java.util.TreeMap;
+import java.util.LinkedList;
 
 /**
  *
@@ -14,20 +14,19 @@ import java.util.TreeMap;
 public class PaqueteInicial implements java.io.Serializable{
     
     private Usuario user;
-    private volatile TreeMap<Integer, Usuario> usuarios;
+    private volatile LinkedList<Usuario> usuarios;
 
-    public PaqueteInicial(Usuario user, TreeMap<Integer, Usuario> usuarios) {
+    public PaqueteInicial(Usuario user, LinkedList<Usuario> listUsers) {
         this.user = user;
-        this.usuarios = usuarios;
+        this.usuarios = listUsers;
     }
-
+    
     public Usuario getUser() {
         return user;
     }
 
-    public TreeMap<Integer, Usuario> getUsuarios() {
+    public LinkedList getUsuarios() {
         return usuarios;
     }
-    
     
 }

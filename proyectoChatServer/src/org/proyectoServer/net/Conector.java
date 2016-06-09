@@ -7,7 +7,7 @@ package org.proyectoServer.net;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.TreeMap;
+import java.util.LinkedList;
 import org.proyectoChatComun.base.Usuario;
 
 /**
@@ -16,27 +16,24 @@ import org.proyectoChatComun.base.Usuario;
  */
 public class Conector {
     
-    /*
-    Considerar el cambio de treemap a hashmap
-    */
     private final ServerSocket server;
-    private volatile TreeMap<Integer, Cliente> clientes;
-    private volatile TreeMap<Integer, Usuario> usuarios;
+    private volatile LinkedList<Cliente> clientes;
+    private volatile LinkedList<Usuario> usuarios;
     
     public Conector(int puerto) throws IOException {
    
         server = new ServerSocket(puerto);
-        clientes = new TreeMap<>();
-        usuarios = new TreeMap<>();
+        clientes = new LinkedList<>();
+        usuarios = new LinkedList<>();
     }
 
-    public void addCliente(int key, Cliente value){
-        clientes.put(key, value);
-        usuarios.put(key, value.getUser());
+    public void addCliente(Cliente value){
+        clientes.add(value);
+        usuarios.add(value.getUser());
     }
 
-    public void addUser(int key, Usuario value){
-        usuarios.put(key, value);
+    public void addUser(Usuario value){
+        usuarios.add(value);
     }
 
     public void removeCliente(int index){
@@ -48,12 +45,12 @@ public class Conector {
     public void removeUser(int index){
         usuarios.remove(index);
     }
-    
-    public TreeMap<Integer, Cliente> getClientes() {
+
+    public LinkedList<Cliente> getClientes() {
         return clientes;
     }
 
-    public TreeMap<Integer, Usuario> getUsuarios() {
+    public LinkedList<Usuario> getUsuarios() {
         return usuarios;
     }
 

@@ -5,9 +5,7 @@
  */
 package org.proyectoChatCliente.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.TreeMap;
+import java.util.LinkedList;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 import org.proyectoChatComun.base.Usuario;
@@ -18,36 +16,21 @@ import org.proyectoChatComun.base.Usuario;
  */
 public class LMForo implements ListModel<Usuario>{
 
-    /*
-    Considerar cambiar los ArrayList por LinkedList
-    */
-    private TreeMap<Integer, Usuario> mapaUsuarios;
-    private ArrayList<Usuario> listaUsuarios;
+    private LinkedList<Usuario> listaUsuarios;
     
-    public LMForo(TreeMap<Integer, Usuario> usuarios) {
-        super();
-        this.mapaUsuarios = usuarios;
-        System.out.println("Cantidad de usuarios conectados: " + mapaUsuarios.size());
-    }
-
-    public LMForo(ArrayList<Usuario> listaUsuarios) {
+    public LMForo(LinkedList<Usuario> listaUsuarios) {
         this.listaUsuarios = listaUsuarios;
         System.out.println("Cantidad de usuarios conectados: " + listaUsuarios.size());
     }
 
     @Override
     public int getSize() {
-
-        if (mapaUsuarios != null) return mapaUsuarios.size();
-        
-        else return listaUsuarios.size();
+        return listaUsuarios.size();
     }
 
     @Override
     public Usuario getElementAt(int index) {
-        if (mapaUsuarios != null) return mapaUsuarios.get(index);
-        
-        else return listaUsuarios.get(index);
+        return listaUsuarios.get(index);
     }
 
     @Override
@@ -59,6 +42,5 @@ public class LMForo implements ListModel<Usuario>{
     public void removeListDataListener(ListDataListener l) {
 
     }
-
     
 }

@@ -8,9 +8,8 @@ package org.proyectoServer.gui;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -560,9 +559,13 @@ public class Servidor extends javax.swing.JFrame {
     private void updateCombobox() {
 
         try {
-            TreeMap<Integer, Usuario> usuarios = Database.getUsers();
+            LinkedList<Usuario> usuarios = Database.getListUsers(TipoFiltro.SHOW_ENABLE_ONLY);
             
-            usuarios.values().stream().map((user) -> {
+            /*
+             * map --> ejecuta una sentencia de codigo y retorna el resultado de esta
+             * para ser trabajado
+             */
+            usuarios.stream().map((user) -> {
                 cboEmisor.addItem(user.toString());
                 return user;
             }).map((user) -> {

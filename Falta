@@ -1,4 +1,7 @@
 - Actualizar lista de usuarios conectados
-- Agregar comprobaciones de conexion a internet (revisar)
+- Abrir ventana en el tabbed cuando seleccione un usuario en la lista(revisar)
+- No mostrar en la lista grafica el usuario propio
 - Agregar algoritmos referentes a la desconexion de un cliente (revisar)
 - Mostrar mensajes del foro al iniciar sesion (se pueden agregar al paqueteInicial)
+- Agregar al funcionamiento del software en PublicHostGenerator
+- Recordar que para usar el sw desde diferentes redes hay que revisar los puertos

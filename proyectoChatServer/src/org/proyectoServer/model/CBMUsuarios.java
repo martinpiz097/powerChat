@@ -5,7 +5,7 @@
  */
 package org.proyectoServer.model;
 
-import java.util.TreeMap;
+import java.util.LinkedList;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 import org.proyectoChatComun.base.Usuario;
@@ -16,10 +16,10 @@ import org.proyectoChatComun.base.Usuario;
  */
 public class CBMUsuarios implements ComboBoxModel<Usuario>{
     
-    private TreeMap<Integer, Usuario> usuarios;
-
-    public CBMUsuarios(TreeMap<Integer, Usuario> usuarios) {
-        this.usuarios = usuarios;
+    private LinkedList<Usuario> listaUsuarios;
+    
+    public CBMUsuarios(LinkedList<Usuario> listaUsuarios) {
+        this.listaUsuarios = listaUsuarios;
     }
 
     @Override
@@ -29,20 +29,17 @@ public class CBMUsuarios implements ComboBoxModel<Usuario>{
 
     @Override
     public Object getSelectedItem() {
-
         return null;
     }
 
     @Override
     public int getSize() {
-
-        return usuarios.size();
+        return listaUsuarios.size();
     }
 
     @Override
     public Usuario getElementAt(int index) {
-
-        return usuarios.get(index);
+        return listaUsuarios.get(index);
     }
 
     @Override

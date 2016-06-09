@@ -5,6 +5,7 @@
  */
 package org.proyectoChatCliente.gui;
 
+import java.awt.Frame;
 import javax.swing.ImageIcon;
 
 /**
@@ -13,6 +14,8 @@ import javax.swing.ImageIcon;
  */
 public class CuadroMsg extends javax.swing.JDialog {
 
+    private final ImageIcon icono;
+    
     /**
      * Creates new form CuadroMsg
      * @param parent
@@ -22,16 +25,34 @@ public class CuadroMsg extends javax.swing.JDialog {
      */
     public CuadroMsg(java.awt.Frame parent, boolean modal, ImageIcon img, String texto) {
         super(parent, modal);
+        setLocationRelativeTo(null);
+        icono = null;
         initComponents();
         lblIcono.setIcon(img);
         msgCuadro.setText(texto);
         
-        if (!isVisible()) {
-            System.out.println("No esta visible");
-            setVisible(Boolean.TRUE);
-        }
+        if (!isVisible()) setVisible(Boolean.TRUE);
+        
+        
     }
 
+    public CuadroMsg(Frame parent, boolean modal) {
+        super(parent, modal);
+        setLocationRelativeTo(parent);
+        icono = new ImageIcon(getClass().getResource("/org/proyectoChatCliente/resources/loader.gif"));
+        initComponents();
+        lblIcono.setIcon(icono);
+        icono.setImageObserver(lblIcono);
+    }
+
+    public void showOpenDialog(){
+        setVisible(true);
+    }
+    
+    public void hide(){
+        setVisible(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,10 +66,12 @@ public class CuadroMsg extends javax.swing.JDialog {
         msgCuadro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 255, 255));
 
-        lblIcono.setText("icono");
+        lblIcono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/proyectoChatCliente/resources/loader.gif"))); // NOI18N
 
-        msgCuadro.setFont(new java.awt.Font("Bitstream Vera Sans", 0, 18)); // NOI18N
+        msgCuadro.setFont(new java.awt.Font("Bitstream Vera Sans", 1, 24)); // NOI18N
         msgCuadro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         msgCuadro.setText("Iniciando Sesion");
 
@@ -57,20 +80,19 @@ public class CuadroMsg extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(msgCuadro, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(msgCuadro, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(lblIcono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblIcono, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(msgCuadro)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();

@@ -7,8 +7,8 @@ package org.proyectoChatCliente.net;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JList;
@@ -88,7 +88,7 @@ public class HiloReceptor implements Runnable{
     public void run() {
 
         Mensaje recibido;
-        TreeMap listaRecibida;
+        LinkedList listaRecibida;
         Object objRecibido;
         boolean usuarioExistente = false;
         int cont = 0;
@@ -130,8 +130,8 @@ public class HiloReceptor implements Runnable{
                     }
                     
                     if (cont % 8 == 0) 
-                        if (objRecibido instanceof TreeMap) {
-                            listaRecibida = (TreeMap) objRecibido;
+                        if (objRecibido instanceof LinkedList) {
+                            listaRecibida = (LinkedList) objRecibido;
                             listUsuarios.setModel(new LMForo(listaRecibida));
                         }
                 }

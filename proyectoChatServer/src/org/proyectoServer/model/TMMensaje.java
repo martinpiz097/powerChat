@@ -7,7 +7,7 @@ package org.proyectoServer.model;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.TableModelListener;
@@ -22,13 +22,13 @@ import org.proyectoServer.db.Database;
 public class TMMensaje implements TableModel{
 
     private List<Mensaje> listMsg;
-    private TreeMap<Integer, Mensaje> mapMsg;
+    private Map<Integer, Mensaje> mapMsg;
     
     public TMMensaje(List<Mensaje> listMsg) {
         this.listMsg = listMsg;
     }
 
-    public TMMensaje(TreeMap<Integer, Mensaje> mapMsg) {
+    public TMMensaje(Map<Integer, Mensaje> mapMsg) {
         this.mapMsg = mapMsg;
     }
     

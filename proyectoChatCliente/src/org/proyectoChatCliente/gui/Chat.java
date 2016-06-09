@@ -7,8 +7,7 @@ package org.proyectoChatCliente.gui;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -28,15 +27,16 @@ import org.proyectoChatComun.base.Usuario;
  */
 public class Chat extends javax.swing.JFrame {
 
-    public static final int PUERTO_DEFAULT = 1234;
+    public static final short PUERTO_DEFAULT = 1234;
     private PaqueteInicial paqueteUser;
     private Thread hReceptor;
     private HiloReceptor hiloRec;
     private Conector cliente;
+    private CuadroMsg cuadroStart;
     
     public Chat() {
         initComponents();
-        if (isConnectedToNasa()) 
+        if (isConnectedToNasa())  
             System.out.println("Conectado a la nasa! :)");
         
         else 
@@ -50,6 +50,7 @@ public class Chat extends javax.swing.JFrame {
         winRegistrar.setResizable(false);
         winRegistrar.setSize(winRegistrar.getPreferredSize());
         winRegistrar.setLocationRelativeTo(null);
+        cuadroStart = new CuadroMsg(this, true);
     }
     
     private void send(Object obj) throws IOException{
@@ -435,7 +436,6 @@ public class Chat extends javax.swing.JFrame {
 
                         setVisible(false);
                         winChat.setVisible(true);
-                        paqueteUser.getUsuarios().values().forEach((u) -> System.out.println("Usuario: " + u.getNick()));
                         updateListUsers(paqueteUser.getUsuarios());
                         System.out.println(paqueteUser.getUser());
                         hiloRec = new HiloReceptor
@@ -450,6 +450,7 @@ public class Chat extends javax.swing.JFrame {
                     }
 
                 } else {
+                    cuadroStart.hide();
                     msgFrame = "Usuario y/o contraseña invalidos";
                     typeMessage = JOptionPane.WARNING_MESSAGE;
                     title = "Error de inicio de sesion";
@@ -634,11 +635,11 @@ public class Chat extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_winChatWindowClosing
 
-    private void updateListUsers(TreeMap<Integer, Usuario> usuarios){
-        listaConectados.setModel(new LMForo(usuarios));
-    }
+//    private void updateListUsers(HashMap<Integer, Usuario> usuarios){
+//        listaConectados.setModel(new LMForo(usuarios));
+//    }
     
-    private void updateListUsers(ArrayList<Usuario> usuarios){
+    private void updateListUsers(LinkedList<Usuario> usuarios){
         listaConectados.setModel(new LMForo(usuarios));
     }
     
