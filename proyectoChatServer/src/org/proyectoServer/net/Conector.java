@@ -42,8 +42,20 @@ public class Conector {
         removeUser(index);
     }
     
+    public void removeCliente(Cliente cliente){
+        
+        clientes.remove(cliente);
+        if (cliente.hasUser()) 
+            removeUser(cliente.getUser());
+        
+    }
+    
     public void removeUser(int index){
         usuarios.remove(index);
+    }
+    
+    public void removeUser(Usuario user){
+        usuarios.remove(user);
     }
 
     public LinkedList<Cliente> getClientes() {

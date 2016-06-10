@@ -13,5 +13,6 @@ public enum Code {
 
     NOT_EXISTS,
     IS_CONNECTED,
-    DISCONNECT;
+    DISCONNECT,
+    USERS_PETITION;
 }

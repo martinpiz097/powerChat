@@ -7,6 +7,7 @@ package org.proyectoChatCliente.net;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import org.proyectoChatCliente.gui.PanelChat;
 import org.proyectoChatCliente.model.LMForo;
 import org.proyectoChatComun.base.Mensaje;
 import org.proyectoChatComun.base.PaqueteInicial;
+import org.proyectoChatComun.base.Usuario;
 
 /**
  *
@@ -91,12 +93,10 @@ public class HiloReceptor implements Runnable{
         LinkedList listaRecibida;
         Object objRecibido;
         boolean usuarioExistente = false;
-        int cont = 0;
         String textoForo;
         
         while (true) {            
             
-            cont++;
             try {
                 Thread.sleep(100);
                 objRecibido = con.getReceivedObject();
@@ -129,16 +129,25 @@ public class HiloReceptor implements Runnable{
                         }
                     }
                     
-                    if (cont % 8 == 0) 
-                        if (objRecibido instanceof LinkedList) {
-                            listaRecibida = (LinkedList) objRecibido;
-                            listUsuarios.setModel(new LMForo(listaRecibida));
-                        }
+                    else if (objRecibido instanceof LinkedList) {
+                        listaRecibida = (LinkedList) objRecibido;
+                        listUsuarios.setModel(new LMForo(listaRecibida));
+                        System.out.println("Lista Actualizada");
+                    }
                 }
                 
             } catch (InterruptedException | IOException | ClassNotFoundException ex) {
                 Logger.getLogger(HiloReceptor.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    private void deleteUserFromList(LinkedList listaRecibida) {
+
+        Usuario u;
+        for (int i = 0; i < listaRecibida.size(); i++) {
+            u = (Usuario) listaRecibida.get(i);
+            if (u.getId() == paqIni.getUser().getId()) listaRecibida.remove(i);
         }
     }
     

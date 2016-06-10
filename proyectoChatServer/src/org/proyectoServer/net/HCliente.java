@@ -8,9 +8,11 @@ package org.proyectoServer.net;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.proyectoChatComun.base.Mensaje;
+import org.proyectoChatComun.base.Usuario;
 import org.proyectoServer.db.Database;
 
 /**
@@ -21,10 +23,32 @@ public class HCliente extends Thread{
 
     private Cliente cliente;
     private volatile Conector c;
+    private LinkedList<Usuario> listaCache;
     
     public HCliente(Cliente cliente, Conector c) {
         this.cliente = cliente;
         this.c = c;
+        listaCache = c.getUsuarios();
+    }
+    
+    public Cliente getCliente(){
+        return cliente;
+    }
+
+    public boolean hasClient(){
+        return cliente != null;
+    }
+    
+    private void removeThisUserFromList(){
+        
+    }
+    
+    private LinkedList<Usuario> filterList(LinkedList<Usuario> lista){
+        LinkedList<Usuario> listaFiltrada = new LinkedList<>();
+        lista.stream().filter(
+                (u) -> u.getId() != cliente.getUser().getId()).forEach(listaFiltrada::add);
+        
+        return listaFiltrada;
     }
     
     @Override
@@ -39,7 +63,10 @@ public class HCliente extends Thread{
 
                 if (cliente.getSocket().isConnected() || !cliente.getSocket().isClosed()) {
 
-                    if (cont % 10 == 0) cliente.sendObject(c.getUsuarios());
+                    if (c.getUsuarios().size() != listaCache.size()) {
+                        listaCache = c.getUsuarios();
+                        cliente.sendObject(filterList(listaCache));
+                    }
 
                     objRecibido = cliente.getReceivedObject();
                     System.out.println("Objeto ha sido recibido");
@@ -83,12 +110,14 @@ public class HCliente extends Thread{
                     break;
                 }
             } catch (InterruptedException | IOException | ClassNotFoundException | SQLException ex) {
-                System.out.println("Cayo en la excepcion");
-                Logger.getLogger(HCliente.class.getName()).log(Level.SEVERE, null, ex);
+                // Logger.getLogger(HCliente.class.getName()).log(Level.SEVERE, null, ex);
                 break;
             }
+        
         }
         
+        cliente = null;
+        c.removeCliente(this.cliente);
     }
     
 }

@@ -41,6 +41,19 @@ public class HiloConector implements Runnable{
         return "[" + new Calendario().getReloj() + "] ";
     }
     
+    private LinkedList<Usuario> filterList(LinkedList<Usuario> lista, Usuario exception){
+        LinkedList<Usuario> listaFiltrada = new LinkedList<>();
+
+        Usuario u;
+        
+        for (Iterator<Usuario> it = lista.iterator(); it.hasNext();) {
+            u = it.next();
+            if (u.getId() != exception.getId()) listaFiltrada.add(u);
+        }
+        
+        return listaFiltrada;
+    }
+    
     @Override
     public void run() {
 
@@ -56,6 +69,12 @@ public class HiloConector implements Runnable{
         
         while (true) {            
             try {
+                if (conexiones.size() != conector.getClientes().size()) {
+                    HCliente hclient;
+                    conexiones.remove(conexiones.stream().filter(
+                            (con) -> !con.hasClient()).findFirst().get());
+                }
+                
                 Thread.sleep(500);
                 sockCliente = conector.getServer().accept();
                 System.out.println("Llego una peticion");
@@ -93,7 +112,7 @@ public class HiloConector implements Runnable{
                             conector.addCliente(nuevo);
                             System.out.println("Cliente agregado a la lista");
                             System.out.println("Usuarios conectados actualmente: " + conector.getUsuarios().size());
-                            nuevo.sendObject(new PaqueteInicial(newUser, conector.getUsuarios()));
+                            nuevo.sendObject(new PaqueteInicial(newUser, filterList(conector.getUsuarios(), newUser)));
                             hc = new HCliente(nuevo, conector);
                             hc.start();
                             conexiones.add(hc);

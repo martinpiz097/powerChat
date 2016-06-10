@@ -23,6 +23,8 @@ public class LMForo implements ListModel<Usuario>{
         System.out.println("Cantidad de usuarios conectados: " + listaUsuarios.size());
     }
 
+    
+    
     @Override
     public int getSize() {
         return listaUsuarios.size();

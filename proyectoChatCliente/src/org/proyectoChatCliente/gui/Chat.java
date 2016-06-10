@@ -642,6 +642,15 @@ public class Chat extends javax.swing.JFrame {
     private void updateListUsers(LinkedList<Usuario> usuarios){
         listaConectados.setModel(new LMForo(usuarios));
     }
+
+    private void deleteUserFromList(LinkedList listaRecibida) {
+
+        Usuario u;
+        for (int i = 0; i < listaRecibida.size(); i++) {
+            u = (Usuario) listaRecibida.get(i);
+            if (u.getId() == paqueteUser.getUser().getId()) listaRecibida.remove(i);
+        }
+    }
     
     public static void main(String args[]) {
         try {

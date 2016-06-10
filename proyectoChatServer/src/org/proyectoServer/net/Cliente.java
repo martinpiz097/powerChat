@@ -38,6 +38,10 @@ public class Cliente {
     public Socket getSocket() {
         return socket;
     }
+
+    public boolean hasUser(){
+        return user != null;
+    }
     
 //    public void login(String nick, HashMap<Integer, Usuario> usuarios) throws SQLException{
 //        
