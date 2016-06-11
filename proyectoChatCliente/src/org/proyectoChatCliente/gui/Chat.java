@@ -571,14 +571,14 @@ public class Chat extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tabbedChatMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedChatMouseReleased
-
-        // Crear opciones para cerrar panel
-        int opcionSI = JOptionPane.YES_OPTION;
-
-        if (JOptionPane.showConfirmDialog(winChat, "¿Desea borrar el componente?") == opcionSI) {
-            tabbedChat.remove(tabbedChat.getComponentAt(evt.getPoint()));
-            tabbedChat.updateUI();
-        }
+//
+//        // Crear opciones para cerrar panel
+//        int opcionSI = JOptionPane.YES_OPTION;
+//
+//        if (JOptionPane.showConfirmDialog(winChat, "¿Desea borrar el componente?") == opcionSI) {
+//            tabbedChat.remove(tabbedChat.getComponentAt(evt.getPoint()));
+//            tabbedChat.updateUI();
+//        }
     }//GEN-LAST:event_tabbedChatMouseReleased
 
     private void txtForoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtForoKeyPressed
@@ -622,7 +622,7 @@ public class Chat extends javax.swing.JFrame {
 
         if (evt.getClickCount() == 2) {
             Usuario user = listaConectados.getSelectedValue();
-            hiloRec.addWin(new PanelChat(user.getId(), paqueteUser, cliente), null);
+            hiloRec.addWin(new PanelChat(user.getId(), paqueteUser, cliente), user);
         }
     }//GEN-LAST:event_listaConectadosMouseReleased
 

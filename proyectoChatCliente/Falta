@@ -1,7 +1,6 @@
 - Actualizar lista de usuarios conectados
 - Validar mensajes enviados en los chat
 - Agregado de nuevo PanelChat al TabbedPane
-- Agregar algoritmos referentes a la desconexion de un cliente(revisar)
 - Mostrar mensajes del foro al iniciar sesion (se pueden agregar al paqueteInicial)
 - Comprobar conexion a internet para pausar hilos(evaluar opcion de cerrar sesion para este caso)
 - Agregar nuevo panel cuando se reciba un mensaje de un usuario que no este en la lista de ventanasChat

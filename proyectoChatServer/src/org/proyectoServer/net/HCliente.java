@@ -56,6 +56,7 @@ public class HCliente extends Thread{
         
         Mensaje msg;
         Object objRecibido;
+        
         int cont = 0;
         while (true) {            
             try {
@@ -95,8 +96,23 @@ public class HCliente extends Thread{
                                     }
                                 }
                                 System.out.println("Paso el for");
-                            } else 
-                                c.getClientes().get(msg.getReceptor()).sendObject(msg);
+                            } else {
+                                Cliente res;
+                                int cont2 = 0;
+                                
+                                // Por cada cliente obtenido por el contador
+                                // que contenga un ID de usuario distinto
+                                // al id del receptor del mensaje
+                                // sumo 1 al contador, de lo contrario
+                                // se termina el for y obtengo el indice mediante el contador
+                                // del cliente que estoy buscando
+                                
+                                for(res = c.getClientes().get(cont2); 
+                                        res.getUser().getId() != msg.getReceptor();)
+                                    cont2++;
+
+                                c.getClientes().get(cont2).sendObject(msg);
+                            }
 
                             Database.addMensaje(msg);
                         }

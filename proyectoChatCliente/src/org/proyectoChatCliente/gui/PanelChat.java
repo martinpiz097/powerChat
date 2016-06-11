@@ -35,6 +35,7 @@ public class PanelChat extends javax.swing.JPanel {
         this.paqIni = paqIni;
         this.cliente = cliente;
         initComponents();
+        txtChat.setEditable(false);
         setSize(615, 261);
     }
 
@@ -47,7 +48,6 @@ public class PanelChat extends javax.swing.JPanel {
     public void addMsg(Mensaje msg){
         
         if (msg.getTexto().endsWith("\n")) txtChat.setText(txtChat.getText() + msg);
-        
         else txtChat.setText(txtChat.getText() + msg + "\n");
 
         txtMsg.setText(null);
@@ -87,28 +87,29 @@ public class PanelChat extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtMsgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMsgKeyPressed
 
         String msgEscrito = txtMsg.getText().trim();
-        boolean mensajeVacio = msgEscrito.isEmpty();
         
-        if (evt.isShiftDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.isShiftDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) 
             txtChat.setText(msgEscrito + txtMsg.getText().trim() + "\n");
-        }
+        
         else if (!evt.isShiftDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
+            
+            boolean mensajeVacio = msgEscrito.isEmpty();
             try {
                 if (!mensajeVacio) {
                     
                     Mensaje msg = new Mensaje(msgEscrito, paqIni.getUser().getId(), usuarioReceptor);
                     System.out.println(msg.getTexto());
+                    System.out.println("Receptor del mensaje: " + msg.getReceptor());
                     send(msg);
                 }
 

@@ -8,9 +8,6 @@
             <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/Conector.java</file>
             <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/main/Runner.java</file>
         </group>
-        <group name="proyecto">
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/Conector.java</file>
-            <file>file:/home/martin/Dropbox/Java/Proyectos/NetBeansProjects/proyectoJava/proyectoChatServer/src/org/proyectoServer/net/HiloConector.java</file>
-        </group>
+        <group name="proyecto"/>
     </open-files>
 </project-private>

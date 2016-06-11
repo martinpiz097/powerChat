@@ -60,6 +60,12 @@ public class HiloReceptor implements Runnable{
         
     }
     */
+    
+    /*
+    Entrega un boolean si el emisor del mensaje esta en uno de los chats
+    activos
+    */
+    
     public boolean isChatExistente(Mensaje msg){
 
         // Metodo anyMatch valida si uno de los elementos cumple con una condicion dada
@@ -86,11 +92,18 @@ public class HiloReceptor implements Runnable{
         
     }
     
+    public void addWin(PanelChat panel, Usuario user){
+        
+        ventanasChat.put(user.getId(), panel);
+        tabbed.addTab(user.getNick(), panel);
+        tabbed.updateUI();
+        panel.requestFocus();
+    }
+    
     @Override
     public void run() {
 
         Mensaje recibido;
-        LinkedList listaRecibida;
         Object objRecibido;
         boolean usuarioExistente = false;
         String textoForo;
@@ -117,7 +130,6 @@ public class HiloReceptor implements Runnable{
                         }
                         
                         else{
-
                             usuarioExistente = isChatExistente(recibido);
                             
                             if (usuarioExistente){ 
@@ -130,8 +142,7 @@ public class HiloReceptor implements Runnable{
                     }
                     
                     else if (objRecibido instanceof LinkedList) {
-                        listaRecibida = (LinkedList) objRecibido;
-                        listUsuarios.setModel(new LMForo(listaRecibida));
+                        listUsuarios.setModel(new LMForo((LinkedList<Usuario>)objRecibido));
                         System.out.println("Lista Actualizada");
                     }
                 }
