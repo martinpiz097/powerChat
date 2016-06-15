@@ -35,8 +35,24 @@ public class Cliente {
         this.entrada = entrada;
     }
 
+    public void close() throws IOException{
+        socket.close();
+    }
+    
+    public boolean hasBytes() throws IOException{
+        return entrada.available() > 0;
+    }
+    
     public Socket getSocket() {
         return socket;
+    }
+
+    public ObjectOutputStream getSalida() {
+        return salida;
+    }
+
+    public ObjectInputStream getEntrada() {
+        return entrada;
     }
 
     public boolean hasUser(){

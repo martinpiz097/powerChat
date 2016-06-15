@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
@@ -22,7 +21,7 @@ import tiempo.Calendario;
 public class HiloConector implements Runnable{
 
     private Conector conector;
-    private List<HCliente> conexiones;
+    private LinkedList<HCliente> conexiones;
     private JTextArea console;
     
     public HiloConector(int puerto, JTextArea console) throws IOException {
@@ -54,6 +53,11 @@ public class HiloConector implements Runnable{
         return listaFiltrada;
     }
     
+    private void addThread(HCliente c){
+        c.start();
+        conexiones.add(c);
+    }
+    
     @Override
     public void run() {
 
@@ -70,13 +74,15 @@ public class HiloConector implements Runnable{
         while (true) {            
             try {
                 if (conexiones.size() != conector.getClientes().size()) {
-                    HCliente hclient;
-                    conexiones.remove(conexiones.stream().filter(
+                    conexiones.removeIf((con) -> !con.hasClientConnected());
+                    /*conexiones.remove(conexiones.stream().filter(
                             (con) -> !con.hasClient()).findFirst().get());
+                    */
                 }
                 
                 Thread.sleep(500);
                 sockCliente = conector.getServer().accept();
+                conector.getServer().accept();
                 System.out.println("Llego una peticion");
                 nuevo = new Cliente(sockCliente);
                 peticionCliente = nuevo.getReceivedObject();
@@ -100,11 +106,10 @@ public class HiloConector implements Runnable{
                         Cliente value;
                         for (Iterator<Cliente> it = conector.getClientes().iterator(); it.hasNext();) {
                             value = it.next();
-                            
-                            if (value.getUser().getId() == newUser.getId()) 
+                            if (value.getUser().getId() == newUser.getId()){ 
                                 userAlreadyConnected = true;
-                            
-                            if(userAlreadyConnected) break;
+                                break;
+                            }
                         }
                         
                         if (!userAlreadyConnected) {
@@ -114,11 +119,10 @@ public class HiloConector implements Runnable{
                             System.out.println("Usuarios conectados actualmente: " + conector.getUsuarios().size());
                             nuevo.sendObject(new PaqueteInicial(newUser, filterList(conector.getUsuarios(), newUser)));
                             hc = new HCliente(nuevo, conector);
-                            hc.start();
-                            conexiones.add(hc);
+                            addThread(hc);
                             updateConsole("Cliente " + nuevo.getUser().getNick());
                         }
-                        
+
                         else nuevo.sendObject(Code.IS_CONNECTED);
                         
                     }

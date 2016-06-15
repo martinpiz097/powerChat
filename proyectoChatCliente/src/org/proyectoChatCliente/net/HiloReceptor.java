@@ -7,7 +7,6 @@ package org.proyectoChatCliente.net;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -83,7 +82,6 @@ public class HiloReceptor implements Runnable{
     }
     
     public void addWin(PanelChat panel, Mensaje msg){
-        
         ventanasChat.put(msg.getEmisor(), panel);
         tabbed.addTab(msg.getStrEmisor(), panel);
         tabbed.updateUI();
@@ -97,9 +95,11 @@ public class HiloReceptor implements Runnable{
         ventanasChat.put(user.getId(), panel);
         tabbed.addTab(user.getNick(), panel);
         tabbed.updateUI();
-        panel.requestFocus();
-    }
-    
+
+        // Pendiente el tema de dejar seleccionado el chat que se abre desde
+        // la lista --> deberia haber un metodo exclusivo para este caso
+        
+    }    
     @Override
     public void run() {
 
@@ -112,10 +112,10 @@ public class HiloReceptor implements Runnable{
             
             try {
                 Thread.sleep(100);
-                objRecibido = con.getReceivedObject();
                 
-                if (objRecibido != null) {
-                    
+                if (con.hasBytes()) {
+                    objRecibido = con.getReceivedObject();
+                    System.out.println(objRecibido.getClass().getName());
                     if (objRecibido instanceof Mensaje) {
                         recibido = (Mensaje) objRecibido;
                         
@@ -132,16 +132,16 @@ public class HiloReceptor implements Runnable{
                         else{
                             usuarioExistente = isChatExistente(recibido);
                             
-                            if (usuarioExistente){ 
-                                usuarioExistente = !usuarioExistente;
+                            if (usuarioExistente) 
                                 displayMessage(recibido);
-                            }
+                            
                             else addWin(new PanelChat(recibido.getEmisor()), recibido);
                             
                         }
                     }
                     
                     else if (objRecibido instanceof LinkedList) {
+                        System.out.println("Objeto recibido es una lista");
                         listUsuarios.setModel(new LMForo((LinkedList<Usuario>)objRecibido));
                         System.out.println("Lista Actualizada");
                     }

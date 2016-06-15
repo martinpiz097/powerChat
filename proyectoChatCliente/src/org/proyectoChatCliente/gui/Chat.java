@@ -630,6 +630,7 @@ public class Chat extends javax.swing.JFrame {
 
         try {
             cliente.sendObject(Code.DISCONNECT);
+            cliente.close();
         } catch (IOException ex) {
             Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
         }

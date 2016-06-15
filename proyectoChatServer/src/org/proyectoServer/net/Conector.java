@@ -17,8 +17,8 @@ import org.proyectoChatComun.base.Usuario;
 public class Conector {
     
     private final ServerSocket server;
-    private volatile LinkedList<Cliente> clientes;
-    private volatile LinkedList<Usuario> usuarios;
+    private LinkedList<Cliente> clientes;
+    private LinkedList<Usuario> usuarios;
     
     public Conector(int puerto) throws IOException {
    
@@ -38,20 +38,19 @@ public class Conector {
 
     public void removeCliente(int index){
         
-        clientes.remove(index);
+        clientes.removeIf((cli) -> cli.getUser().getId() == index);
         removeUser(index);
     }
     
     public void removeCliente(Cliente cliente){
         
         clientes.remove(cliente);
-        if (cliente.hasUser()) 
-            removeUser(cliente.getUser());
+        if (cliente.hasUser()) removeUser(cliente.getUser());
         
     }
     
     public void removeUser(int index){
-        usuarios.remove(index);
+        usuarios.removeIf((user) -> user.getId() == index);
     }
     
     public void removeUser(Usuario user){

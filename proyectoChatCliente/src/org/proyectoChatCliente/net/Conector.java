@@ -32,6 +32,10 @@ public class Conector implements java.io.Serializable {
         socket.close();
     }
 
+    public boolean hasBytes() throws IOException{
+        return entrada.available() > 0;
+    }
+    
     public Socket getSocket() {
         return socket;
     }

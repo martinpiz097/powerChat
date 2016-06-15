@@ -457,8 +457,7 @@ public class Servidor extends javax.swing.JFrame {
 
         try {
             updateConsole("Iniciando Servidor....");
-            hiloConector = new Thread(new HiloConector(1234, console)::run);
-            hiloConector.start();
+            new Thread(new HiloConector(1234, console)::run).start();
             updateConsole("Servidor iniciado!");
             btnStartServer.setEnabled(false);
             updateConsole("Esperando clientes......");
